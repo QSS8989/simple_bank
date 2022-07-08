@@ -14,5 +14,7 @@ sqlc:
 	sqlc generate
 test:
 	go test -v -cover ./...
+gitadd:
+	git add . 
 
 .PHONY: postgres createdb dropdb migrateup migratedown migratecreate sqlc
