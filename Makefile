@@ -14,7 +14,9 @@ sqlc:
 	sqlc generate
 test:
 	go test -v -cover ./...
-gitadd:
-	git add . 
+server:
+	go run main.go
+mock:
+	mockgen -package mockdb -destination db/mock/store.go /Users/qiushisong/study/db/sqlc  simple_bank/db/sqlc Store
 
-.PHONY: postgres createdb dropdb migrateup migratedown migratecreate sqlc
+.PHONY: postgres createdb dropdb migrateup migratedown migratecreate sqlc test server mock

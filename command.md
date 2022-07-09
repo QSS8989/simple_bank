@@ -14,7 +14,7 @@ git add .
 
 ## 提交
 
-git commit -m "init CI workflow"
+git commit -m "name"
 
 ## 地址
 

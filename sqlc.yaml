@@ -5,5 +5,8 @@ packages:
     engine: 'postgresql' # 数据库引擎
     schema: './db/migration/' # schema 路径
     queries: './db/query' # 查询实体路径
-    emit_interface: false
+    emit_interface: true
     emit_json_tags: true
+    emit_prepared_queries: false
+    emit_exact_table_names: false
+    emit_empty_slices: true
