@@ -30,8 +30,8 @@ func createRandomUser(t *testing.T) User {
 	require.Equal(t, arg.FullName, user.FullName)
 	require.Equal(t, arg.Email, user.Email)
 
-	require.True(t, user.PasswordChangedAt.IsZero())
-	require.NotZero(t, user.CreatedAt)
+	require.True(t, user.PasswordChangeAt.IsZero())
+	require.NotZero(t, user.CreateAt)
 
 	return user
 }
@@ -41,16 +41,16 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestGetUser(t *testing.T) {
-	newUser := createRandomUser(t)
-	result, err := testQueries.GetUser(context.Background(), newUser.Username)
+	user_c := createRandomUser(t)
+	user_g, err := testQueries.GetUser(context.Background(), user_c.Username)
 	require.NoError(t, err)
-	require.NotEmpty(t, result)
+	require.NotEmpty(t, user_g)
 
-	require.Equal(t, newUser.Username, result.Username)
-	require.Equal(t, newUser.HashedPassword, result.HashedPassword)
-	require.Equal(t, newUser.FullName, result.FullName)
-	require.Equal(t, newUser.Email, result.Email)
-	require.WithinDuration(t, newUser.CreatedAt, result.CreatedAt, time.Second)
-	require.WithinDuration(t, newUser.PasswordChangedAt, result.PasswordChangedAt, time.Second)
+	require.Equal(t, user_c.Username, user_g.Username)
+	require.Equal(t, user_c.HashedPassword, user_g.HashedPassword)
+	require.Equal(t, user_c.FullName, user_g.FullName)
+	require.Equal(t, user_c.Email, user_g.Email)
+	require.WithinDuration(t, user_c.CreateAt, user_g.CreateAt, time.Second)
+	require.WithinDuration(t, user_c.PasswordChangeAt, user_g.PasswordChangeAt, time.Second)
 
 }

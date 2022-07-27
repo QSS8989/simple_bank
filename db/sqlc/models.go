@@ -11,7 +11,7 @@ import (
 type Account struct {
 	ID       int64     `json:"id"`
 	Owner    string    `json:"owner"`
-	Blance   int64     `json:"blance"`
+	Balance  int64     `json:"balance"`
 	Currency string    `json:"currency"`
 	CreateAt time.Time `json:"create_at"`
 }
@@ -32,10 +32,10 @@ type Transfer struct {
 }
 
 type User struct {
-	Username          string    `json:"username"`
-	HashedPassword    string    `json:"hashed_password"`
-	FullName          string    `json:"full_name"`
-	Email             string    `json:"email"`
-	PasswordChangedAt time.Time `json:"password_changed_at"`
-	CreatedAt         time.Time `json:"created_at"`
+	Username         string    `json:"username"`
+	HashedPassword   string    `json:"hashed_password"`
+	FullName         string    `json:"full_name"`
+	Email            string    `json:"email"`
+	PasswordChangeAt time.Time `json:"password_change_at"`
+	CreateAt         time.Time `json:"create_at"`
 }

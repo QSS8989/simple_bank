@@ -12,7 +12,6 @@ func TestTransferTx(t *testing.T) {
 	store := NewStore(testDB)
 	account_from := createRandomAccount(t)
 	account_to := createRandomAccount(t)
-	fmt.Println(">> before:", account_from.Blance, account_to.Blance)
 	n := 5
 	amount := int64(10)
 
@@ -86,10 +85,10 @@ func TestTransferTx(t *testing.T) {
 		require.Equal(t, account_to.ID, toAccount.ID)
 
 		// 	check account's balance
-		fmt.Println(">> tx:", fromAccount.Blance, toAccount.Blance)
+		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
 
-		from_amount := account_from.Blance - fromAccount.Blance
-		to_amount := toAccount.Blance - account_to.Blance
+		from_amount := account_from.Balance - fromAccount.Balance
+		to_amount := toAccount.Balance - account_to.Balance
 		require.Equal(t, from_amount, to_amount)
 		require.True(t, from_amount > 0)
 		require.True(t, from_amount%amount == 0)
@@ -100,7 +99,7 @@ func TestTransferTx(t *testing.T) {
 		existed[k] = true
 
 	}
-	fmt.Println(">> after:", account_from.Blance, account_to.Blance)
+	fmt.Println(">> after:", account_from.Balance, account_to.Balance)
 	// check the final updated balances
 	updatedAccount_from, err := testQueries.GetAccount(context.Background(), account_from.ID)
 	require.NoError(t, err)
@@ -108,15 +107,14 @@ func TestTransferTx(t *testing.T) {
 	updatedAccount_to, err := testQueries.GetAccount(context.Background(), account_to.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updatedAccount_to)
-	require.Equal(t, account_from.Blance-int64(n)*amount, updatedAccount_from.Blance)
-	require.Equal(t, account_to.Blance+int64(n)*amount, updatedAccount_to.Blance)
+	require.Equal(t, account_from.Balance-int64(n)*amount, updatedAccount_from.Balance)
+	require.Equal(t, account_to.Balance+int64(n)*amount, updatedAccount_to.Balance)
 }
 
 func TestDeadLock(t *testing.T) {
 	store := NewStore(testDB)
 	account_from := createRandomAccount(t)
 	account_to := createRandomAccount(t)
-	fmt.Println(">> before:", account_from.Blance, account_to.Blance)
 	n := 10
 	amount := int64(10)
 
@@ -131,9 +129,7 @@ func TestDeadLock(t *testing.T) {
 			toAccountID = account_from.ID
 
 		}
-
 		go func() {
-
 			_, err := store.TransferTx(context.Background(), TransferTxParams{
 				FromAccountID: fromAccountID,
 				ToAccountID:   toAccountID,
@@ -143,13 +139,13 @@ func TestDeadLock(t *testing.T) {
 
 		}()
 	}
-	fmt.Println(">> after:", account_from.Blance, account_to.Blance)
+	fmt.Println(">> after:", account_from.Balance, account_to.Balance)
 	updatedAccount_from, err := testQueries.GetAccount(context.Background(), account_from.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updatedAccount_from)
 	updatedAccount_to, err := testQueries.GetAccount(context.Background(), account_to.ID)
 	require.NoError(t, err)
 	require.NotEmpty(t, updatedAccount_to)
-	require.Equal(t, account_from.Blance, updatedAccount_from.Blance)
-	require.Equal(t, account_to.Blance, updatedAccount_to.Blance)
+	require.Equal(t, account_from.Balance, updatedAccount_from.Balance)
+	require.Equal(t, account_to.Balance, updatedAccount_to.Balance)
 }
